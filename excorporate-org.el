@@ -63,7 +63,7 @@ by `current-time'."
 	 (keyword (if (time-less-p now end-time)
 		      "TODO"
 		    "DONE")))
-    (insert (format "** %s %s\n" keyword subject))
+    (insert (format "** %s %s\n" keyword (decode-coding-string subject 'utf-8)))
     (org-schedule nil (format-time-string "<%Y-%m-%d %a %H:%M>"
 					  start-time))
     (forward-line -1)
@@ -75,7 +75,7 @@ by `current-time'."
 (defun exco-org-insert-invitees (invitees)
   "Parse and insert a list of invitees, INVITEES."
   (dolist (invitee invitees)
-    (insert (format "  + %s\n" invitee))))
+    (insert (format "  + %s\n" (decode-coding-string invitee 'utf-8)))))
 
 (defun exco-org-insert-headline (identifier month day year)
   "Insert Org headline for IDENTIFIER on date MONTH DAY YEAR."
@@ -96,7 +96,7 @@ are the requested participants."
   (exco-org-insert-meeting-headline subject start end)
   (insert (format "+ Duration: %d minutes\n"
 		  (round (/ (float-time (time-subtract end start)) 60.0))))
-  (insert (format "+ Location: %s\n" location))
+  (insert (format "+ Location: %s\n" (decode-coding-string location 'utf-8)))
   (when main-invitees
     (insert "+ Invitees:\n")
     (exco-org-insert-invitees main-invitees))
